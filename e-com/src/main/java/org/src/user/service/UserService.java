@@ -4,8 +4,8 @@ import org.src.user.model.User;
 import org.src.user.repository.UserRepository;
 
 public class UserService {
-    private UserRepository userRepository;
-    private PasswordHasher passwordHasher;
+    private final UserRepository userRepository;
+    private final PasswordHasher passwordHasher;
 
     public UserService(UserRepository userRepository, PasswordHasher passwordHasher) {
         this.userRepository = userRepository;
@@ -23,6 +23,13 @@ public class UserService {
         return true;
     }
 
-    public boolean authenticateUser()
+    public boolean authenticateUser(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        return user != null && passwordHasher.verifyPassword(password, user.getPassword());
+    }
 
+    public boolean authorizeUser(String username, String requiredRole) {
+        User user = userRepository.findByUsername(username);
+        return  user != null && user.getRole().equals(requiredRole);
+    }
 }

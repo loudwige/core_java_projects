@@ -36,8 +36,8 @@ public class UserRepository {
      * @param username the username of the user to be retrieved
      * @return an Optional containing the User object if found, or an empty Optional if no user with the specified username exists
      */
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(userDatabase.get(username));
+    public User findByUsername(String username) {
+        return userDatabase.get(username);
     }
 
     /**
